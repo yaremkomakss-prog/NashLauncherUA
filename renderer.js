@@ -1,0 +1,17 @@
+const $=id=>document.getElementById(id);
+const translations={
+uk:{home:"Головна",mods:"Моди та збірки",friends:"Друзі",visuals:"Візуали",settings:"Налаштування",ready:"Готовий до налаштування",play:"ГРАТИ",title:"Головна",nick:"Спершу введіть нікнейм!",nickText:"Щоб продовжити, введіть свій нікнейм у профілі.",ver:"Спершу виберіть версію!",verText:"Щоб продовжити, виберіть версію Minecraft."},
+ru:{home:"Главная",mods:"Моды и сборки",friends:"Друзья",visuals:"Визуалы",settings:"Настройки",ready:"Готов к настройке",play:"ИГРАТЬ",title:"Главная",nick:"Сначала введите никнейм!",nickText:"Чтобы продолжить, введите никнейм в профиле.",ver:"Сначала выберите версию!",verText:"Чтобы продолжить, выберите версию Minecraft."},
+en:{home:"Home",mods:"Mods & modpacks",friends:"Friends",visuals:"Visuals",settings:"Settings",ready:"Ready to configure",play:"PLAY",title:"Home",nick:"Enter a nickname first!",nickText:"Enter your nickname in the profile to continue.",ver:"Select a version first!",verText:"Select a Minecraft version to continue."}};
+function setLang(lang){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>{let k=el.dataset.i18n;el.textContent=translations[lang][k]||el.textContent});$("pageTitle").textContent=translations[lang].title;$("language").value=lang;$("language2").value=lang}
+$("language").addEventListener("change",e=>setLang(e.target.value));$("language2").addEventListener("change",e=>setLang(e.target.value));
+document.querySelectorAll(".nav").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".nav").forEach(b=>b.classList.remove("active"));document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));btn.classList.add("active");$(btn.dataset.page).classList.add("active");$("pageTitle").textContent=btn.innerText.trim()}));
+$("nickname").addEventListener("input",()=>{$("nickPreview").textContent=$("nickname").value.trim()||"Гравець не вибраний"});
+function showModal(title,txt){$("modalTitle").textContent=title;$("modalText").textContent=txt;$("modal").classList.remove("hidden")}
+$("play").addEventListener("click",()=>{const lang=$("language").value,t=translations[lang],nick=$("nickname").value.trim(),ver=$("version").value;if(!nick){showModal(t.nick,t.nickText);return}if(!/^[A-Za-z0-9_]{3,16}$/.test(nick)){showModal("Некоректний нікнейм","Використовуй 3–16 символів: латинські літери, цифри або _");return}if(!ver){showModal(t.ver,t.verText);return}showModal("Профіль готовий","Вибрано "+nick+" · Minecraft "+ver+" · "+$("loader").value+". Реальний запуск гри буде підключено в наступному етапі.");});
+$("ok").onclick=()=>{$("modal").classList.add("hidden");if(!$("nickname").value.trim()){$("nickname").focus()}else if(!$("version").value){$("version").focus()}};
+$("cancel").onclick=()=>$("modal").classList.add("hidden");
+const colors=["#e34b4b","#397de8","#95613e","#f18b2d","#9255e8","#e3c632","#39aa5a","#eeeeee","#222229","#60636a"];
+colors.forEach(c=>{let b=document.createElement("button");b.className="swatch";b.style.background=c;b.title=c;b.onclick=()=>setAccent(c);$("swatches").appendChild(b)});
+function setAccent(c){document.documentElement.style.setProperty("--accent",c);$("customColor").value=c}
+$("customColor").addEventListener("input",e=>setAccent(e.target.value));setAccent("#9255e8");

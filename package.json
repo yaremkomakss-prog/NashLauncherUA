@@ -1,0 +1,19 @@
+{
+  "name": "nashlauncherua",
+  "version": "0.1.0",
+  "description": "NashLauncherUA desktop launcher starter",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "ua.nashlauncher.launcher",
+    "productName": "NashLauncherUA",
+    "win": { "target": "nsis" }
+  }
+}
